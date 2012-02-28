@@ -125,6 +125,7 @@ define archive::download (
           false => "curl ${insecure_arg} -o ${src_target}/${name} ${url}",
           default => fail ( "Unknown checksum value: '${checksum}'" ),
         },
+        provider => shell,
         creates => "${src_target}/${name}",
         logoutput => true,
         timeout => $timeout,
