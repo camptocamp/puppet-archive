@@ -54,7 +54,7 @@ define archive::download (
     true : {
       case $digest_type {
         'md5','sha1','sha224','sha256','sha384','sha512' : { 
-          $checksum_cmd = "cd ${src_target} && ${digest_type}sum -c ${name}.${digest_type}" 
+          $checksum_cmd = "${digest_type}sum -c ${name}.${digest_type}" 
         }
         default: { fail "Unimplemented digest type" }
       }
@@ -118,21 +118,27 @@ define archive::download (
  
   case $ensure {
     present: {
-      $on_error = "(rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1)"
       exec {"download archive $name and check sum":
-        command => $checksum ? {
-          true => "(curl ${insecure_arg} -o ${src_target}/${name} ${url} && ${checksum_cmd}) || ${on_error}",
-          false => "curl ${insecure_arg} -o ${src_target}/${name} ${url}",
-          default => fail ( "Unknown checksum value: '${checksum}'" ),
-        },
-        creates => "${src_target}/${name}",
+        command   => "curl ${insecure_arg} -o ${src_target}/${name} ${url}",
+        creates   => "${src_target}/${name}",
         logoutput => true,
-        timeout => $timeout,
-        require => Package["curl"],
-        refreshonly => $checksum ? {
-          true => true,
+        timeout   => $timeout,
+        require   => Package["curl"],
+        notify => $checksum ? {
+          true    => Exec["rm-on-error-${name}"],
           default => undef,
         },
+        refreshonly => $checksum ? {
+          true    => true,
+          default => undef,
+        },
+      }
+
+      exec {"rm-on-error-${name}":
+        command     => "rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1",
+        unless      => $checksum_cmd,
+        cwd         => $src_target,
+        refreshonly => true,
       }
     }
     absent: {
