@@ -60,11 +60,11 @@ define archive::download (
         default: { fail 'Unimplemented digest type' }
       }
 
-      if $digest_url != '' and $digest_content != '' {
-        fail 'digest_url and digest_content should not be used together !'
+      if $digest_url != '' and $digest_string != '' {
+        fail 'digest_url and digest_string should not be used together !'
       }
 
-      if $digest_content == '' {
+      if $digest_string == '' {
 
         case $ensure {
           present: {
