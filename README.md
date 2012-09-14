@@ -1,0 +1,37 @@
+Archive Puppet Module
+====================
+
+[![Build Status](https://secure.travis-ci.org/smarchive/puppet-archive.png)](http://travis-ci.org/smarchive/puppet-archive)
+
+Overview
+--------
+
+Puppet Module to download and extract tar and zip archives based on [camptocamp/puppet-archive](https://github.com/camptocamp/puppet-archive).
+
+Usage
+-----
+
+Example:
+
+    archive { 'apache-tomcat-6.0.26':
+      ensure => present,
+      url    => 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz',
+      target => '/opt',
+    }
+
+License
+-------
+
+Puppet module originally from [camptocamp/puppet-archive](https://github.com/camptocamp/puppet-archive).
+
+All changes copyright (c) 2012 smarchive GmbH
+
+This script is licensed under the Apache License, Version 2.0.
+
+See http://www.apache.org/licenses/LICENSE-2.0.html for the full license text.
+
+
+Support
+-------
+
+Please log tickets and issues at our [project site](https://github.com/smarchive/puppet-archive/issues).
