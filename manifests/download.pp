@@ -6,7 +6,6 @@
 #
 # - *$url:
 # - *$digest_url:
-# - *$digest_content: Default value ''
 # - *$digest_string: Default value ''
 # - *$digest_type: Default value 'md5'.
 # - *$timeout: Default value 120.
@@ -30,7 +29,6 @@ define archive::download (
   $ensure         = present,
   $checksum       = true,
   $digest_url     = '',
-  $digest_content = '',
   $digest_string  = '',
   $digest_type    = 'md5',
   $timeout        = 120,
@@ -55,11 +53,11 @@ define archive::download (
         default: { fail('Unimplemented digest type') }
       }
 
-      if $digest_url != '' and $digest_content != '' {
-        fail('digest_url and digest_content should not be used together!')
+      if $digest_url != '' and $digest_string != '' {
+        fail('digest_url and digest_string should not be used together!')
       }
 
-      if $digest_content == '' {
+      if $digest_string == '' {
 
         case $ensure {
           present: {
