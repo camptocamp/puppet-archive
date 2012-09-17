@@ -53,11 +53,11 @@ define archive::extract (
       $extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
 
       $unpack_command = $extension ? {
-        'zip'             => "mkdir -p ${target} && ${extract_zip}",
-        'tar.gz', 'tgz'   => "mkdir -p ${target} && ${extract_targz}",
-        'tar.xz', 'txz'   => "mkdir -p ${target} && ${extract_tarxz}",
-        'tar.bz2', 'tbz2' => "mkdir -p ${target} && ${extract_tarbz2}",
-        default   => fail("Unknown extension value '${extension}'"),
+        'zip'            => "mkdir -p ${target} && ${extract_zip}",
+        /(tar.gz|tgz)/   => "mkdir -p ${target} && ${extract_targz}",
+        /(tar.xz|txz)/   => "mkdir -p ${target} && ${extract_tarxz}",
+        /(tar.bz2|tbz2)/ => "mkdir -p ${target} && ${extract_tarbz2}",
+        default          => fail("Unknown extension value '${extension}'"),
       }
 
       exec {"Unpack ${name}":
