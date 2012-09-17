@@ -34,6 +34,10 @@ define archive::extract (
   $extension  = 'tar.gz',
   $timeout    = 120) {
 
+  Exec {
+    path => [ '/usr/local/bin', '/usr/bin', 'bin', ],
+  }
+
   if $root_dir != '' {
     $extract_dir = "${target}/${root_dir}"
   } else {

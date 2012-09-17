@@ -35,6 +35,10 @@ define archive::download (
   $src_target     = '/usr/src',
   $allow_insecure = false) {
 
+  Exec {
+    path => [ '/usr/local/bin', '/usr/bin', 'bin', ],
+  }
+
   $insecure_arg = $allow_insecure ? {
     true    => '-k',
     default => '',
