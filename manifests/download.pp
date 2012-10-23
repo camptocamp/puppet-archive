@@ -35,10 +35,6 @@ define archive::download (
   $src_target     = '/usr/src',
   $allow_insecure = false) {
 
-  Exec {
-    path => [ '/usr/local/bin', '/usr/bin', 'bin', ],
-  }
-
   $insecure_arg = $allow_insecure ? {
     true    => '-k',
     default => '',
@@ -52,7 +48,7 @@ define archive::download (
     true : {
       case $digest_type {
         'md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512' : {
-          $checksum_cmd = "${digest_type}sum -c ${name}.${digest_type}"
+          $checksum_cmd = "/usr/bin/${digest_type}sum -c ${name}.${digest_type}"
         }
         default: { fail('Unimplemented digest type') }
       }
@@ -73,6 +69,7 @@ define archive::download (
             }
 
             exec {"download digest of archive ${name}":
+              path    => [ '/usr/local/bin', '/usr/bin', 'bin', ],
               command => "curl ${insecure_arg} -L -s -o ${src_target}/${name}.${digest_type} ${digest_src}",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
@@ -129,6 +126,7 @@ define archive::download (
       }
 
       exec {"download archive ${name} and check sum":
+        path        => [ '/usr/local/bin', '/usr/bin', 'bin', ],
         command     => "curl -L -s ${insecure_arg} -o ${src_target}/${name} ${url}",
         creates     => "${src_target}/${name}",
         logoutput   => true,
@@ -139,6 +137,7 @@ define archive::download (
       }
 
       exec {"rm-on-error-${name}":
+        path        => [ '/usr/local/bin', '/usr/bin', 'bin', ],
         command     => "rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1",
         unless      => $checksum_cmd,
         cwd         => $src_target,
