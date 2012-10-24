@@ -69,7 +69,7 @@ define archive::download (
             }
 
             exec {"download digest of archive ${name}":
-              path    => [ '/usr/local/bin', '/usr/bin', 'bin', ],
+              path    => [ '/usr/local/bin', '/usr/bin', '/bin', ],
               command => "curl ${insecure_arg} -L -s -o ${src_target}/${name}.${digest_type} ${digest_src}",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
@@ -126,7 +126,7 @@ define archive::download (
       }
 
       exec {"download archive ${name} and check sum":
-        path        => [ '/usr/local/bin', '/usr/bin', 'bin', ],
+        path        => [ '/usr/local/bin', '/usr/bin', '/bin', ],
         command     => "curl -L -s ${insecure_arg} -o ${src_target}/${name} ${url}",
         creates     => "${src_target}/${name}",
         logoutput   => true,
@@ -137,7 +137,7 @@ define archive::download (
       }
 
       exec {"rm-on-error-${name}":
-        path        => [ '/usr/local/bin', '/usr/bin', 'bin', ],
+        path        => [ '/usr/local/bin', '/usr/bin', '/bin', ],
         command     => "rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1",
         unless      => $checksum_cmd,
         cwd         => $src_target,
