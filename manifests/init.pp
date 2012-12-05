@@ -6,7 +6,7 @@ Download and extract an archive.
 
 Parameters:
 
-- *$url: 
+- *$url:
 - *$target: Destination directory
 - *$checksum: Default value "true"
 - *$digest_url: Default value ""
@@ -22,15 +22,15 @@ Example usage:
 
   archive {"apache-tomcat-6.0.26":
     ensure => present,
-    url => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
+    url    => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
     target => "/opt",
   }
 
 */
 define archive (
-  $ensure=present, 
-  $url, 
-  $target, 
+  $url,
+  $target,
+  $ensure=present,
   $checksum=true,
   $digest_url='',
   $digest_string='',
@@ -39,27 +39,28 @@ define archive (
   $root_dir='',
   $extension='tar.gz',
   $src_target='/usr/src',
-  $allow_insecure=false){
+  $allow_insecure=false,
+) {
 
   archive::download {"${name}.${extension}":
-    ensure => $ensure,
-    url => $url,
-    checksum => $checksum,
-    digest_url => $digest_url,
-    digest_string => $digest_string,
-    digest_type => $digest_type,
-    timeout => $timeout,
-    src_target => $src_target,
+    ensure         => $ensure,
+    url            => $url,
+    checksum       => $checksum,
+    digest_url     => $digest_url,
+    digest_string  => $digest_string,
+    digest_type    => $digest_type,
+    timeout        => $timeout,
+    src_target     => $src_target,
     allow_insecure => $allow_insecure,
   }
 
-  archive::extract {"${name}":
-    ensure => $ensure,
-    target => $target,
+  archive::extract {$name:
+    ensure     => $ensure,
+    target     => $target,
     src_target => $src_target,
-    root_dir => $root_dir,
-    extension => $extension,
-    timeout => $timeout,
-    require => Archive::Download["${name}.${extension}"]
+    root_dir   => $root_dir,
+    extension  => $extension,
+    timeout    => $timeout,
+    require    => Archive::Download["${name}.${extension}"]
   }
 }
