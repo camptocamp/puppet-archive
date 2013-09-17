@@ -40,18 +40,20 @@ define archive (
   $extension='tar.gz',
   $src_target='/usr/src',
   $allow_insecure=false,
+  $follow_redirects=false,
 ) {
 
   archive::download {"${name}.${extension}":
-    ensure         => $ensure,
-    url            => $url,
-    checksum       => $checksum,
-    digest_url     => $digest_url,
-    digest_string  => $digest_string,
-    digest_type    => $digest_type,
-    timeout        => $timeout,
-    src_target     => $src_target,
-    allow_insecure => $allow_insecure,
+    ensure           => $ensure,
+    url              => $url,
+    checksum         => $checksum,
+    digest_url       => $digest_url,
+    digest_string    => $digest_string,
+    digest_type      => $digest_type,
+    timeout          => $timeout,
+    src_target       => $src_target,
+    allow_insecure   => $allow_insecure,
+    follow_redirects => $follow_redirects,
   }
 
   archive::extract {$name:
