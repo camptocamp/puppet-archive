@@ -49,20 +49,23 @@ define archive::extract (
     present: {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
+      $extract_tar    = "tar --no-same-owner --no-same-permissions -xf ${src_target}/${name}.${extension} -C ${target}"
       $extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
 
       exec {"$name unpack":
         command => $extension ? {
           'zip'     => "mkdir -p ${target} && ${extract_zip}",
+          'tar'     => "mkdir -p ${target} && ${extract_tar}",
           'tar.gz'  => "mkdir -p ${target} && ${extract_targz}",
           'tgz'     => "mkdir -p ${target} && ${extract_targz}",
           'tar.bz2' => "mkdir -p ${target} && ${extract_tarbz2}",
           'tgz2'    => "mkdir -p ${target} && ${extract_tarbz2}",
+          'rpm'     => "mkdir -p ${target} && ${extract_rpm}",
           default   => fail ( "Unknown extension value '${extension}'" ),
         },
         creates => $extract_dir,
-        timeout => $timeout
+        timeout => $timeout,
       }
     }
     absent: {
