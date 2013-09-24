@@ -52,6 +52,7 @@ define archive::extract (
       $extract_tar    = "tar --no-same-owner --no-same-permissions -xf ${src_target}/${name}.${extension} -C ${target}"
       $extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_rpm    = "rpm2cpio ${name}.${extension} | cpio --no-preserve-owner -id ${target}"
 
       exec {"$name unpack":
         command => $extension ? {
