@@ -4,6 +4,10 @@
 #
 # === Parameters
 #
+# [*ensure*]
+#   Makes sure, the package dependencies are only enforced when the existence of
+#   the archive file to be extracted is ensured.
+#
 # [*extension*]
 #   The extension of the archive to be extracted - used to determine the package
 #   dependencies (e.g. 'tar.gz': 'tar', 'rpm': 'rpm2cpio, cpio', ...
@@ -26,6 +30,7 @@
 #
 
 define archive::package (
+    $ensure    = present,
     $extension = 'tar.gz'
 ) {
     case $ensure {
