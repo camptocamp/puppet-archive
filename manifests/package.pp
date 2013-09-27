@@ -1,7 +1,6 @@
 define archive::package (
     $ensure    = present,
-    $extension = 'tar.gz',
-    $packages  = [ 'tar' ]
+    $extension = 'tar.gz'
 ) {
     case $ensure {
         present: {
