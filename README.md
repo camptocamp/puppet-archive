@@ -14,6 +14,7 @@ Supported archive types are:
 - `tar.bz2`, `tbz2`
 - `tar.xz`, `txz`
 - `zip`
+- `rpm`
 
 Usage
 -----
