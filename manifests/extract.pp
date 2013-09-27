@@ -48,6 +48,10 @@ define archive::extract (
   case $ensure {
     present: {
 
+      file {$target:
+        ensure => directory,
+      }
+
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
       $extract_tar    = "tar --no-same-owner --no-same-permissions -xf ${src_target}/${name}.${extension} -C ${target}"
       $extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
@@ -69,6 +73,7 @@ define archive::extract (
         creates => $extract_dir,
         timeout => $timeout,
         cwd     => $target,
+        require => File[$target],
       }
     }
     absent: {
