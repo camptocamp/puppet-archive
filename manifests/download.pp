@@ -82,12 +82,12 @@ define archive::download (
               $digest_src = $digest_url
             }
 
-            exec {"download digest of archive $name":
+            exec {"download digest of archive ${name}":
               command => "curl ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} ${digest_src}",
               path    => '/usr/bin',
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
-              notify  => Exec["download archive $name and check sum"],
+              notify  => Exec["download archive ${name} and check sum"],
               require => Package['curl'],
             }
 
