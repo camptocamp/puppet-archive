@@ -1,3 +1,4 @@
+# extract.pp
 /*
 
 == Definition: archive::extract
@@ -11,6 +12,7 @@ Parameters:
 - *$root_dir: Default value "".
 - *$extension: Default value ".tar.gz".
 - *$timeout: Default value 120.
+- *$strip_components: Default value 0.
 
 Example usage:
 
@@ -31,13 +33,15 @@ the root directory use the commands "tar tf archive.tar.gz" or
 "unzip -l archive.zip"
 
 */
+
 define archive::extract (
   $target,
   $ensure=present,
   $src_target='/usr/src',
   $root_dir='',
   $extension='tar.gz',
-  $timeout=120) {
+  $timeout=120,
+  $strip_components) {
 
   if $root_dir != '' {
     $extract_dir = "${target}/${root_dir}"
@@ -48,9 +52,13 @@ define archive::extract (
   case $ensure {
     present: {
 
+      if $extension == 'zip' and $strip_components > 0 {
+	 fail ( "Strip components not supported for ZIP archives." )
+      }       
+
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
-      $extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
 
       exec {"$name unpack":
         command => $extension ? {
