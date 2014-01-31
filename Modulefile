@@ -1,0 +1,8 @@
+name         'camptocamp-archive'
+version      '0.0.1'
+source       'https://github.com/camptocamp/puppet-archive'
+author       'Camptocamp'
+license      'Apache 2.0'
+summary      'Camptocamp Archive Module'
+description  'Archive Module for Puppet'
+project_page 'https://github.com/camptocamp/puppet-archive'
