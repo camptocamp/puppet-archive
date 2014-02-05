@@ -42,6 +42,8 @@ define archive::download (
   $follow_redirects=false,
 ) {
 
+  Exec { path => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'], }
+
   $insecure_arg = $allow_insecure ? {
     true    => '-k',
     default => '',
