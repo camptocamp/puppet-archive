@@ -17,6 +17,7 @@ Parameters:
 - *$extension: Default value ".tar.gz"
 - *$timeout: Default value 120
 - *$allow_insecure: Default value false
+- *$follow_redirects: Default value false
 
 Example usage:
 

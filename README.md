@@ -15,6 +15,11 @@ Supported archive types are:
 - `tar.xz`, `txz`
 - `zip`
 
+Features:
+
+- Ability to follow redirects
+- Supports checksum matching
+
 Usage
 -----
 
@@ -25,6 +30,40 @@ Example:
       url    => 'http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz',
       target => '/opt',
     }
+
+You can have archive follow redirects by setting:
+
+```
+follow_redirects => true
+````
+
+The default archive format is ```tar.gz```. To use another supported format you must specify the extenstion:
+
+```
+extension => "zip"
+```
+
+By default archive will try and find a matching checksum file to verify the download. To disable this behavior set the ```checksum``` option to ```false```:
+
+```
+checksum => false
+```
+
+You can specify a ```digest_url```, ```digest_string``` and ```digest_type``` to verify archive integrity.
+
+This full example will download the [packer](packer.io) tool to ```/usr/local/bin```:
+
+```
+archive { '0.5.1_linux_amd64':
+   ensure => present,
+   url => 'https://dl.bintray.com/mitchellh/packer/0.5.1_linux_amd64.zip',
+   target => '/usr/local/bin',
+   follow_redirects => true,
+   extension => 'zip',
+   checksum => false,
+   src_target => '/tmp'
+}
+```
 
 License
 -------
