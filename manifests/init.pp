@@ -44,6 +44,11 @@ define archive (
   $follow_redirects=false,
 ) {
 
+  archive::package { "packages-${extension}":
+    ensure    => $ensure,
+    extension => $extension,
+  }
+
   archive::download {"${name}.${extension}":
     ensure           => $ensure,
     url              => $url,
@@ -55,6 +60,7 @@ define archive (
     src_target       => $src_target,
     allow_insecure   => $allow_insecure,
     follow_redirects => $follow_redirects,
+    require          => Archive::Package["packages-${extension}"],
   }
 
   archive::extract {$name:

@@ -48,21 +48,32 @@ define archive::extract (
   case $ensure {
     present: {
 
+      file {$target:
+        ensure => directory,
+      }
+
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
+      $extract_tar    = "tar --no-same-owner --no-same-permissions -xf ${src_target}/${name}.${extension} -C ${target}"
       $extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_rpm    = "rpm2cpio ${src_target}/${name}.${extension} | cpio --no-preserve-owner -id"
 
       exec {"$name unpack":
         command => $extension ? {
           'zip'     => "mkdir -p ${target} && ${extract_zip}",
+          'tar'     => "mkdir -p ${target} && ${extract_tar}",
           'tar.gz'  => "mkdir -p ${target} && ${extract_targz}",
           'tgz'     => "mkdir -p ${target} && ${extract_targz}",
           'tar.bz2' => "mkdir -p ${target} && ${extract_tarbz2}",
           'tgz2'    => "mkdir -p ${target} && ${extract_tarbz2}",
+          'rpm'     => "mkdir -p ${target} && ${extract_rpm}",
           default   => fail ( "Unknown extension value '${extension}'" ),
         },
+        path    => ['/bin', '/usr/bin'],
         creates => $extract_dir,
-        timeout => $timeout
+        timeout => $timeout,
+        cwd     => $target,
+        require => File[$target],
       }
     }
     absent: {
