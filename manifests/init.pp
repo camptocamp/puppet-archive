@@ -44,6 +44,8 @@ define archive (
   $follow_redirects=false,
 ) {
 
+  Exec { path => [ "/usr/bin:/bin:/usr/sbin:/sbin" ] }
+
   archive::download {"${name}.${extension}":
     ensure           => $ensure,
     url              => $url,
