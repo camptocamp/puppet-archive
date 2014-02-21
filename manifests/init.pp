@@ -1,34 +1,34 @@
-/*
-
-== Definition: archive
-
-Download and extract an archive.
-
-Parameters:
-
-- *$url:
-- *$target: Destination directory
-- *$checksum: Default value "true"
-- *$digest_url: Default value ""
-- *$digest_string: Default value ""
-- *$digest_type: Default value "md5"
-- *$src_target: Default value "/usr/src"
-- *$root_dir: Default value ""
-- *$extension: Default value ".tar.gz"
-- *$timeout: Default value 120
-- *$allow_insecure: Default value false
-- *$follow_redirects: Default value false
-- *$exec_path: Path for execs, Default value "/usr/bin:/bin:/usr/sbin:/sbin"
-
-Example usage:
-
-  archive {"apache-tomcat-6.0.26":
-    ensure => present,
-    url    => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
-    target => "/opt",
-  }
-
-*/
+#
+#
+# == Definition: archive
+#
+# Download and extract an archive.
+#
+# Parameters:
+#
+# - *$url:
+# - *$target: Destination directory
+# - *$checksum: Default value "true"
+# - *$digest_url: Default value ""
+# - *$digest_string: Default value ""
+# - *$digest_type: Default value "md5"
+# - *$src_target: Default value "/usr/src"
+# - *$root_dir: Default value ""
+# - *$extension: Default value ".tar.gz"
+# - *$timeout: Default value 120
+# - *$allow_insecure: Default value false
+# - *$follow_redirects: Default value false
+# - *$exec_path: Path for execs, Default value "/usr/bin:/bin:/usr/sbin:/sbin"
+#
+# Example usage:
+#
+#   archive {"apache-tomcat-6.0.26":
+#     ensure => present,
+#     url    => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
+#     target => "/opt",
+#   }
+#
+#
 define archive (
   $url,
   $target,
@@ -43,7 +43,7 @@ define archive (
   $src_target='/usr/src',
   $allow_insecure=false,
   $follow_redirects=false,
-  $exec_path="/usr/bin:/bin:/usr/sbin:/sbin"
+  $exec_path='/usr/bin:/bin:/usr/sbin:/sbin'
 ) {
 
   Exec { path => [ $exec_path ] }
