@@ -58,6 +58,8 @@ define archive::download (
     }
   }
 
+  Exec { path => [ "/usr/bin:/bin:/usr/sbin:/sbin" ] }
+
   case $checksum {
     true : {
       case $digest_type {
