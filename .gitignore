@@ -1,3 +1,14 @@
+.idea
+.rvmrc
+.bundle/
+.project
+.librarian/
+.tmp/
 pkg/
+doc/
+/spec/fixtures/manifests
+/spec/fixtures/modules
+.vagrant/
+tmp
+.rspec_system
 *.swp
-spec/fixtures
