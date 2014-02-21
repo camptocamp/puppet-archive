@@ -18,6 +18,7 @@ Parameters:
 - *$timeout: Default value 120
 - *$allow_insecure: Default value false
 - *$follow_redirects: Default value false
+- *$exec_path: Path for execs, Default value "/usr/bin:/bin:/usr/sbin:/sbin"
 
 Example usage:
 
@@ -42,9 +43,10 @@ define archive (
   $src_target='/usr/src',
   $allow_insecure=false,
   $follow_redirects=false,
+  $exec_path="/usr/bin:/bin:/usr/sbin:/sbin"
 ) {
 
-  Exec { path => [ "/usr/bin:/bin:/usr/sbin:/sbin" ] }
+  Exec { path => [ $exec_path ] }
 
   archive::download {"${name}.${extension}":
     ensure           => $ensure,
