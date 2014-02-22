@@ -1,0 +1,4 @@
+---
+fixtures:
+  symlinks:
+    archive: "#{source_dir}"

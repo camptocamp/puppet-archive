@@ -49,19 +49,26 @@ By default archive will try and find a matching checksum file to verify the down
 checksum => false
 ```
 
+The default path for exec's (curl, et al.) is ```"/usr/bin:/bin:/usr/sbin:/sbin"```. To use a different path:
+
+```
+exec_path => "/usr/ucb:/usr/bin:/bin:/usr/sbin:/sbin"
+```
+
 You can specify a ```digest_url```, ```digest_string``` and ```digest_type``` to verify archive integrity.
 
 This full example will download the [packer](packer.io) tool to ```/usr/local/bin```:
 
 ```
 archive { '0.5.1_linux_amd64':
-   ensure => present,
-   url => 'https://dl.bintray.com/mitchellh/packer/0.5.1_linux_amd64.zip',
-   target => '/usr/local/bin',
+   ensure           => present,
+   url              => 'https://dl.bintray.com/mitchellh/packer/0.5.1_linux_amd64.zip',
+   target           => '/usr/local/bin',
    follow_redirects => true,
-   extension => 'zip',
-   checksum => false,
-   src_target => '/tmp'
+   extension        => 'zip',
+   checksum         => false,
+   src_target       => '/tmp',
+   exec_path        => "/usr/ucb:/usr/bin:/bin:/usr/sbin:/sbin"
 }
 ```
 
