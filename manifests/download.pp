@@ -83,7 +83,7 @@ define archive::download (
             }
 
             exec {"download digest of archive $name":
-              command => "curl ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} ${digest_src}",
+              command => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} ${digest_src}",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
               notify  => Exec["download archive $name and check sum"],
@@ -127,7 +127,7 @@ define archive::download (
   case $ensure {
     present: {
       exec {"download archive $name and check sum":
-        command   => "curl ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} ${url}",
+        command   => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} ${url}",
         creates   => "${src_target}/${name}",
         logoutput => true,
         timeout   => $timeout,
