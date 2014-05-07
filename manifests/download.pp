@@ -120,7 +120,10 @@ define archive::download (
         }
       }
     }
-    false :  { notice 'No checksum for this archive' }
+    false :  {
+      $checksum_cmd = undef # Fix for strict_variables
+      notice 'No checksum for this archive'
+    }
     default: { fail ( "Unknown checksum value: '${checksum}'" ) }
   }
 
