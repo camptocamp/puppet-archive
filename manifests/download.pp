@@ -84,6 +84,7 @@ define archive::download (
 
             exec {"download digest of archive $name":
               command => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} ${digest_src}",
+              path    => '/usr/bin',
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
               notify  => Exec["download archive $name and check sum"],
@@ -131,6 +132,7 @@ define archive::download (
     present: {
       exec {"download archive $name and check sum":
         command   => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} ${url}",
+        path      => '/usr/bin',
         creates   => "${src_target}/${name}",
         logoutput => true,
         timeout   => $timeout,
@@ -147,6 +149,7 @@ define archive::download (
 
       exec {"rm-on-error-${name}":
         command     => "rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1",
+        path        => '/usr/bin',
         unless      => $checksum_cmd,
         cwd         => $src_target,
         refreshonly => true,

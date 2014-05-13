@@ -61,6 +61,7 @@ define archive::extract (
           'tgz2'    => "mkdir -p ${target} && ${extract_tarbz2}",
           default   => fail ( "Unknown extension value '${extension}'" ),
         },
+        path    => '/usr/bin',
         creates => $extract_dir,
         timeout => $timeout
       }
