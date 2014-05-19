@@ -43,6 +43,11 @@ define archive (
   $allow_insecure=false,
   $follow_redirects=false,
 ) {
+  # install required package unzip
+  package { 'unzip': ensure => 'installed'}
+
+  # set the right PATH environments for exec commands
+  Exec { path => [ "/usr/bin:/bin:/usr/sbin:/sbin" ] }
 
   archive::download {"${name}.${extension}":
     ensure           => $ensure,
