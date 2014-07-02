@@ -1,5 +1,5 @@
 name         'camptocamp-archive'
-version      '0.0.1'
+version      '0.1.0'
 source       'https://github.com/camptocamp/puppet-archive'
 author       'Camptocamp'
 license      'Apache 2.0'
