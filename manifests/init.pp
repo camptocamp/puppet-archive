@@ -18,6 +18,7 @@ Parameters:
 - *$timeout: Default value 120
 - *$allow_insecure: Default value false
 - *$follow_redirects: Default value false
+- *$verbose: Default value true
 
 Example usage:
 
@@ -42,6 +43,7 @@ define archive (
   $src_target='/usr/src',
   $allow_insecure=false,
   $follow_redirects=false,
+  $verbose=true,
 ) {
 
   archive::download {"${name}.${extension}":
@@ -55,6 +57,7 @@ define archive (
     src_target       => $src_target,
     allow_insecure   => $allow_insecure,
     follow_redirects => $follow_redirects,
+    verbose          => $verbose,
   }
 
   archive::extract {$name:

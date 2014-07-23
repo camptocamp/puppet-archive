@@ -14,6 +14,7 @@ Parameters:
 - *$src_target: Default value "/usr/src".
 - *$allow_insecure: Default value false.
 - *$follow_redirects: Default value false.
+- *$verbose: Default value true.
 
 Example usage:
 
@@ -40,6 +41,7 @@ define archive::download (
   $src_target='/usr/src',
   $allow_insecure=false,
   $follow_redirects=false,
+  $verbose=true,
 ) {
 
   $insecure_arg = $allow_insecure ? {
@@ -122,7 +124,9 @@ define archive::download (
     }
     false :  {
       $checksum_cmd = undef # Fix for strict_variables
-      notice 'No checksum for this archive'
+      if $verbose {
+        notice 'No checksum for this archive'
+      }
     }
     default: { fail ( "Unknown checksum value: '${checksum}'" ) }
   }
