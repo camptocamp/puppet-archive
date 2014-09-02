@@ -136,20 +136,22 @@ define archive::download (
 
   case $ensure {
     present: {
+      $notify      = $checksum ? {
+        true    => Exec["rm-on-error-${name}"],
+        default => undef,
+      }
+      $refreshonly = $checksum ? {
+        true    => true,
+        default => undef,
+      }
       exec {"download archive ${name} and check sum":
         command     => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} ${url}",
         creates     => "${src_target}/${name}",
         logoutput   => true,
         timeout     => $timeout,
         require     => Package['curl'],
-        notify      => $checksum ? {
-          true    => Exec["rm-on-error-${name}"],
-          default => undef,
-        },
-        refreshonly => $checksum ? {
-          true    => true,
-          default => undef,
-        },
+        notify      => $notify,
+        refreshonly => $refreshonly,
       }
 
       exec {"rm-on-error-${name}":
