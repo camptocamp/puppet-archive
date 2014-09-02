@@ -1,35 +1,32 @@
-/*
-
-== Definition: archive::download
-
-Archive downloader with integrity verification.
-
-Parameters:
-
-- *$url:
-- *$digest_url:
-- *$digest_string: Default value ""
-- *$digest_type: Default value "md5".
-- *$timeout: Default value 120.
-- *$src_target: Default value "/usr/src".
-- *$allow_insecure: Default value false.
-- *$follow_redirects: Default value false.
-- *$verbose: Default value true.
-
-Example usage:
-
-  archive::download {"apache-tomcat-6.0.26.tar.gz":
-    ensure => present,
-    url    => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
-  }
-
-  archive::download {"apache-tomcat-6.0.26.tar.gz":
-    ensure        => present,
-    digest_string => "f9eafa9bfd620324d1270ae8f09a8c89",
-    url           => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
-  }
-
-*/
+# == Definition: archive::download
+#
+# Archive downloader with integrity verification.
+#
+# Parameters:
+#
+# - *$url:
+# - *$digest_url:
+# - *$digest_string: Default value ""
+# - *$digest_type: Default value "md5".
+# - *$timeout: Default value 120.
+# - *$src_target: Default value "/usr/src".
+# - *$allow_insecure: Default value false.
+# - *$follow_redirects: Default value false.
+# - *$verbose: Default value true.
+#
+# Example usage:
+#
+#  archive::download {"apache-tomcat-6.0.26.tar.gz":
+#    ensure => present,
+#    url    => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
+#  }
+#
+#  archive::download {"apache-tomcat-6.0.26.tar.gz":
+#    ensure        => present,
+#    digest_string => "f9eafa9bfd620324d1270ae8f09a8c89",
+#    url           => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
+#  }
+#
 define archive::download (
   $url,
   $ensure=present,
@@ -84,11 +81,11 @@ define archive::download (
               $digest_src = $digest_url
             }
 
-            exec {"download digest of archive $name":
+            exec {"download digest of archive ${name}":
               command => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} ${digest_src}",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
-              notify  => Exec["download archive $name and check sum"],
+              notify  => Exec["download archive ${name} and check sum"],
               require => Package['curl'],
             }
 
@@ -100,6 +97,9 @@ define archive::download (
               force  => true,
             }
           }
+          default: {
+            fail('$ensure can only be present or absent.')
+          }
         }
       }
 
@@ -109,7 +109,7 @@ define archive::download (
             file {"${src_target}/${name}.${digest_type}":
               ensure  => $ensure,
               content => "${digest_string} *${name}",
-              notify  => Exec["download archive $name and check sum"],
+              notify  => Exec["download archive ${name} and check sum"],
             }
           }
           absent: {
@@ -118,6 +118,9 @@ define archive::download (
               purge  => true,
               force  => true,
             }
+          }
+          default: {
+            fail('$ensure can only be present or absent.')
           }
         }
       }
@@ -133,19 +136,19 @@ define archive::download (
 
   case $ensure {
     present: {
-      exec {"download archive $name and check sum":
-        command   => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} ${url}",
-        creates   => "${src_target}/${name}",
-        logoutput => true,
-        timeout   => $timeout,
-        require   => Package['curl'],
-        notify    => $checksum ? {
+      exec {"download archive ${name} and check sum":
+        command     => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} ${url}",
+        creates     => "${src_target}/${name}",
+        logoutput   => true,
+        timeout     => $timeout,
+        require     => Package['curl'],
+        notify      => $checksum ? {
           true    => Exec["rm-on-error-${name}"],
           default => undef,
         },
         refreshonly => $checksum ? {
-          true      => true,
-          default   => undef,
+          true    => true,
+          default => undef,
         },
       }
 
