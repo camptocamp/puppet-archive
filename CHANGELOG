@@ -1,5 +1,8 @@
-2014-07-02 - Version 0.1.0
+##2014-09-05 Release 0.1.0
+- allow disabling of no-checksum notices in puppetmaster logs
 
+##2014-07-02 Release 0.1.0
+###Summary
 - Make curl silent, #21
 - Add documentation
 - Fix strict variables
