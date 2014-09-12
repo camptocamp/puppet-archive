@@ -136,7 +136,7 @@ define archive::download (
 
   case $ensure {
     present: {
-      $notify      = $checksum ? {
+      $_notify     = $checksum ? {
         true    => Exec["rm-on-error-${name}"],
         default => undef,
       }
@@ -150,7 +150,7 @@ define archive::download (
         logoutput   => true,
         timeout     => $timeout,
         require     => Package['curl'],
-        notify      => $notify,
+        notify      => $_notify,
         refreshonly => $refreshonly,
       }
 
