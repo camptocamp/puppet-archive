@@ -9,7 +9,7 @@
 # - *$digest_string: Default value ""
 # - *$digest_type: Default value "md5".
 # - *$timeout: Default value 120.
-# - *$src_target: Default value "/usr/src".
+# - *$src_target: Default value "/usr/src".cu
 # - *$allow_insecure: Default value false.
 # - *$follow_redirects: Default value false.
 # - *$verbose: Default value true.
@@ -82,7 +82,7 @@ define archive::download (
             }
 
             exec {"download digest of archive ${name}":
-              command => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
+              command => "curl -s -S -f ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
               notify  => Exec["download archive ${name} and check sum"],
