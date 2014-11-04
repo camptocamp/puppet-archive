@@ -62,7 +62,7 @@ define archive::extract (
       exec {"${name} unpack":
         command => $command,
         creates => $extract_dir,
-        timeout => $timeout
+        timeout => $timeout,
         path    => $path,
       }
     }
