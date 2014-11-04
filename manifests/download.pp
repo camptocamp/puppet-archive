@@ -39,6 +39,7 @@ define archive::download (
   $allow_insecure=false,
   $follow_redirects=false,
   $verbose=true,
+  $path=$::path,
 ) {
 
   $insecure_arg = $allow_insecure ? {
@@ -85,6 +86,7 @@ define archive::download (
               command => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
+              path    => $path,
               notify  => Exec["download archive ${name} and check sum"],
               require => Package['curl'],
             }
@@ -149,6 +151,7 @@ define archive::download (
         creates     => "${src_target}/${name}",
         logoutput   => true,
         timeout     => $timeout,
+        path        => $path,
         require     => Package['curl'],
         notify      => $_notify,
         refreshonly => $refreshonly,
@@ -158,6 +161,7 @@ define archive::download (
         command     => "rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1",
         unless      => $checksum_cmd,
         cwd         => $src_target,
+        path        => $path,
         refreshonly => true,
       }
     }
