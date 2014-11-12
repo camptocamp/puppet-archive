@@ -52,6 +52,7 @@ define archive::extract (
       $extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
 
       $command = $extension ? {
+        'war'     => "mkdir -p ${target} && ${extract_zip}",
         'zip'     => "mkdir -p ${target} && ${extract_zip}",
         'tar.gz'  => "mkdir -p ${target} && ${extract_targz}",
         'tgz'     => "mkdir -p ${target} && ${extract_targz}",
