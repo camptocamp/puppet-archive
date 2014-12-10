@@ -10,6 +10,7 @@
 # - *$extension: Default value ".tar.gz".
 # - *$timeout: Default value 120.
 # - *$strip_components: Default value 0.
+# - *$user: The user used to do the extraction.
 #
 # Example usage:
 #
@@ -39,6 +40,7 @@ define archive::extract (
   $path=$::path,
   $strip_components=0,
   $purge=false,
+  $user=undef,
 ) {
 
   if $root_dir {
@@ -74,6 +76,7 @@ define archive::extract (
         command => $command,
         creates => $extract_dir,
         timeout => $timeout,
+        user    => $user,
         path    => $path,
       }
     }
