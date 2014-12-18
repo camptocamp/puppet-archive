@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-archive",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "author": "Camptocamp",
   "summary": "Camptocamp Archive Module",
   "license": "Apache 2.0",
@@ -9,5 +9,6 @@
   "issues_url": "https://github.com/camptocamp/puppet-archive/issues",
   "description": "Archive Module for Puppet",
   "dependencies": [
+
   ]
 }
