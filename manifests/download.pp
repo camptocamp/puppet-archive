@@ -162,6 +162,7 @@ define archive::download (
         unless      => $checksum_cmd,
         cwd         => $src_target,
         path        => $path,
+        require     => Exec["download archive ${name} and check sum"],
         refreshonly => true,
       }
     }
