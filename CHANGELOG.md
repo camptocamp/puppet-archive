@@ -1,3 +1,8 @@
+## 2015-01-05 - Release 0.3.5
+
+- Simplify bundler cache in Travis CI
+- Fix license name in metadata.json
+
 ##2014-11-18 Release 0.3.2
 - Linting metadata
 
