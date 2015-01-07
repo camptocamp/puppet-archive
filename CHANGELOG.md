@@ -1,3 +1,7 @@
+## 2015-01-07 - Release 0.3.6
+
+- Fix unquoted strings in cases
+
 ## 2015-01-05 - Release 0.3.5
 
 - Simplify bundler cache in Travis CI
