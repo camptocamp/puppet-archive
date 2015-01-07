@@ -74,7 +74,7 @@ define archive::download (
       if $digest_string == '' {
 
         case $ensure {
-          present: {
+          'present': {
 
             if $digest_url == '' {
               $digest_src = "${url}.${digest_type}"
@@ -92,7 +92,7 @@ define archive::download (
             }
 
           }
-          absent: {
+          'absent': {
             file{"${src_target}/${name}.${digest_type}":
               ensure => absent,
               purge  => true,
@@ -107,14 +107,14 @@ define archive::download (
 
       if $digest_string != '' {
         case $ensure {
-          present: {
+          'present': {
             file {"${src_target}/${name}.${digest_type}":
               ensure  => $ensure,
               content => "${digest_string} *${name}",
               notify  => Exec["download archive ${name} and check sum"],
             }
           }
-          absent: {
+          'absent': {
             file {"${src_target}/${name}.${digest_type}":
               ensure => absent,
               purge  => true,
@@ -137,7 +137,7 @@ define archive::download (
   }
 
   case $ensure {
-    present: {
+    'present': {
       $_notify     = $checksum ? {
         true    => Exec["rm-on-error-${name}"],
         default => undef,
@@ -165,7 +165,7 @@ define archive::download (
         refreshonly => true,
       }
     }
-    absent: {
+    'absent': {
       file {"${src_target}/${name}":
         ensure => absent,
         purge  => true,

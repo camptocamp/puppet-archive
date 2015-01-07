@@ -45,7 +45,7 @@ define archive::extract (
   }
 
   case $ensure {
-    present: {
+    'present': {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
       $extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
@@ -66,7 +66,7 @@ define archive::extract (
         path    => $path,
       }
     }
-    absent: {
+    'absent': {
       file {$extract_dir:
         ensure  => absent,
         recurse => true,
