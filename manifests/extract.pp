@@ -32,13 +32,13 @@ define archive::extract (
   $target,
   $ensure=present,
   $src_target='/usr/src',
-  $root_dir='',
+  $root_dir=undef,
   $extension='tar.gz',
   $timeout=120,
   $path=$::path,
 ) {
 
-  if $root_dir != '' {
+  if $root_dir {
     $extract_dir = "${target}/${root_dir}"
   } else {
     $extract_dir = "${target}/${name}"

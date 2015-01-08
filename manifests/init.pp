@@ -7,11 +7,11 @@
 # - *$url:
 # - *$target: Destination directory
 # - *$checksum: Default value "true"
-# - *$digest_url: Default value ""
-# - *$digest_string: Default value ""
+# - *$digest_url: Default value undef
+# - *$digest_string: Default value undef
 # - *$digest_type: Default value "md5"
 # - *$src_target: Default value "/usr/src"
-# - *$root_dir: Default value ""
+# - *$root_dir: Default value undef
 # - *$extension: Default value ".tar.gz"
 # - *$timeout: Default value 120
 # - *$allow_insecure: Default value false
@@ -31,11 +31,11 @@ define archive (
   $target,
   $ensure=present,
   $checksum=true,
-  $digest_url='',
-  $digest_string='',
+  $digest_url=undef,
+  $digest_string=undef,
   $digest_type='md5',
   $timeout=120,
-  $root_dir='',
+  $root_dir=undef,
   $extension='tar.gz',
   $src_target='/usr/src',
   $allow_insecure=false,

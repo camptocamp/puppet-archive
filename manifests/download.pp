@@ -6,7 +6,7 @@
 #
 # - *$url:
 # - *$digest_url:
-# - *$digest_string: Default value ""
+# - *$digest_string: Default value undef
 # - *$digest_type: Default value "md5".
 # - *$timeout: Default value 120.
 # - *$src_target: Default value "/usr/src".
@@ -31,8 +31,8 @@ define archive::download (
   $url,
   $ensure=present,
   $checksum=true,
-  $digest_url='',
-  $digest_string='',
+  $digest_url=undef,
+  $digest_string=undef,
   $digest_type='md5',
   $timeout=120,
   $src_target='/usr/src',
@@ -67,12 +67,31 @@ define archive::download (
         default: { fail 'Unimplemented digest type' }
       }
 
-      if $digest_url != '' and $digest_string != '' {
+      if $digest_url and $digest_string {
         fail 'digest_url and digest_string should not be used together !'
       }
 
-      if $digest_string == '' {
-
+      if $digest_string {
+        case $ensure {
+          'present': {
+            file {"${src_target}/${name}.${digest_type}":
+              ensure  => $ensure,
+              content => "${digest_string} *${name}",
+              notify  => Exec["download archive ${name} and check sum"],
+            }
+          }
+          'absent': {
+            file {"${src_target}/${name}.${digest_type}":
+              ensure => absent,
+              purge  => true,
+              force  => true,
+            }
+          }
+          default: {
+            fail('$ensure can only be present or absent.')
+          }
+        }
+      } else {
         case $ensure {
           'present': {
 
@@ -94,28 +113,6 @@ define archive::download (
           }
           'absent': {
             file{"${src_target}/${name}.${digest_type}":
-              ensure => absent,
-              purge  => true,
-              force  => true,
-            }
-          }
-          default: {
-            fail('$ensure can only be present or absent.')
-          }
-        }
-      }
-
-      if $digest_string != '' {
-        case $ensure {
-          'present': {
-            file {"${src_target}/${name}.${digest_type}":
-              ensure  => $ensure,
-              content => "${digest_string} *${name}",
-              notify  => Exec["download archive ${name} and check sum"],
-            }
-          }
-          'absent': {
-            file {"${src_target}/${name}.${digest_type}":
               ensure => absent,
               purge  => true,
               force  => true,
