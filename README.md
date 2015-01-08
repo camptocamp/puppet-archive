@@ -1,11 +1,8 @@
 Archive Puppet Module
 ====================
 
-[![Puppet Forge](https://img.shields.io/puppetforge/v/camptocamp/archive.svg)][puppetforge]
-[![Build Status](https://img.shields.io/travis/camptocamp/puppet-archive/master.svg)][travis]
-
-[puppetforge]: (https://forge.puppetlabs.com/camptocamp/archive)
-[travis]: (https://travis-ci.org/camptocamp/puppet-archive)
+[![Puppet Forge](http://img.shields.io/puppetforge/v/camptocamp/archive.svg)](https://forge.puppetlabs.com/camptocamp/archive)
+[![Build Status](https://img.shields.io/travis/camptocamp/puppet-archive/master.svg)](https://travis-ci.org/camptocamp/puppet-archive)
 
 Overview
 --------
