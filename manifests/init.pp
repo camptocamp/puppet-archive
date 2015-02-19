@@ -64,6 +64,6 @@ define archive (
     root_dir   => $root_dir,
     extension  => $extension,
     timeout    => $timeout,
-    require    => Archive::Download["${name}.${extension}"]
+    require    => Archive::Download["${name}.${extension}"],
   }
 }
