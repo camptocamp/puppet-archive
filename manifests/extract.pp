@@ -36,6 +36,7 @@ define archive::extract (
   $extension='tar.gz',
   $timeout=120,
   $path=$::path,
+  $strip_components=0,
 ) {
 
   if $root_dir {
@@ -48,8 +49,8 @@ define archive::extract (
     'present': {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
-      $extract_targz  = "tar --no-same-owner --no-same-permissions -xzf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
 
       $command = $extension ? {
         'zip'     => "mkdir -p ${target} && ${extract_zip}",

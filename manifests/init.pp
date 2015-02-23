@@ -41,6 +41,7 @@ define archive (
   $allow_insecure=false,
   $follow_redirects=false,
   $verbose=true,
+  $strip_components=0,
 ) {
 
   archive::download {"${name}.${extension}":
@@ -58,12 +59,13 @@ define archive (
   }
 
   archive::extract {$name:
-    ensure     => $ensure,
-    target     => $target,
-    src_target => $src_target,
-    root_dir   => $root_dir,
-    extension  => $extension,
-    timeout    => $timeout,
-    require    => Archive::Download["${name}.${extension}"],
+    ensure           => $ensure,
+    target           => $target,
+    src_target       => $src_target,
+    root_dir         => $root_dir,
+    extension        => $extension,
+    timeout          => $timeout,
+    strip_components => $strip_components,
+    require          => Archive::Download["${name}.${extension}"],
   }
 }
