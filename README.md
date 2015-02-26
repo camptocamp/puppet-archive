@@ -52,6 +52,12 @@ checksum => false
 
 You can specify a ```digest_url```, ```digest_string``` and ```digest_type``` to verify archive integrity.
 
+For `.tar.gz` and `tar.bz2` archives, the extract step's `--strip-components=n` flag can be accessed. This can be used to [change the name of the extracted directory](http://unix.stackexchange.com/questions/11018/how-to-choose-directory-name-during-untarring).
+
+```
+strip_components => 1
+```
+
 This full example will download the [packer](packer.io) tool to ```/usr/local/bin```:
 
 ```

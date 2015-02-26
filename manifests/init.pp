@@ -17,6 +17,7 @@
 # - *$allow_insecure: Default value false
 # - *$follow_redirects: Default value false
 # - *$verbose: Default value true
+# - *$strip_components: Default value 0
 #
 # Example usage:
 #

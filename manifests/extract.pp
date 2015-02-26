@@ -9,6 +9,7 @@
 # - *$root_dir: Default value "".
 # - *$extension: Default value ".tar.gz".
 # - *$timeout: Default value 120.
+# - *$strip_components: Default value 0.
 #
 # Example usage:
 #
