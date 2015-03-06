@@ -1,3 +1,7 @@
+## 2015-03-06 - Release 0.4.0
+
+- Add --strip-components support
+
 ## 2015-01-07 - Release 0.3.6
 
 - Fix unquoted strings in cases

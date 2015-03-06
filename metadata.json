@@ -1,6 +1,6 @@
 {
   "name": "camptocamp-archive",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "author": "Camptocamp",
   "summary": "Camptocamp Archive Module",
   "license": "Apache-2.0",
@@ -10,5 +10,22 @@
   "description": "Archive Module for Puppet",
   "dependencies": [
 
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    }
   ]
 }
