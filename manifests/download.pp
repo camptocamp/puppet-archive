@@ -63,7 +63,7 @@ define archive::download (
   if $proxy_server {
     $proxy_option = "--proxy ${proxy_server}"
   } else {
-    $proxy_option = ''
+    $proxy_option = undef
   }
 
   case $checksum {
