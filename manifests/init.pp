@@ -18,6 +18,7 @@
 # - *$follow_redirects: Default value false
 # - *$verbose: Default value true
 # - *$strip_components: Default value 0
+# - *$proxy_server: Default value undef
 #
 # Example usage:
 #
@@ -43,6 +44,7 @@ define archive (
   $follow_redirects=false,
   $verbose=true,
   $strip_components=0,
+  $proxy_server=undef,
 ) {
 
   archive::download {"${name}.${extension}":
@@ -57,6 +59,7 @@ define archive (
     allow_insecure   => $allow_insecure,
     follow_redirects => $follow_redirects,
     verbose          => $verbose,
+    proxy_server     => $proxy_server,
   }
 
   archive::extract {$name:
