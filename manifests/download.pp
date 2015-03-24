@@ -125,7 +125,7 @@ define archive::download (
       }
     }
     false :  {
-      $checksum_cmd = undef # Fix for strict_variables
+      $checksum_cmd = 'echo check' # Fix for strict_variables
       if $verbose {
         notice 'No checksum for this archive'
       }
@@ -159,6 +159,7 @@ define archive::download (
         unless      => $checksum_cmd,
         cwd         => $src_target,
         path        => $path,
+        require     => Exec["download archive ${name} and check sum"],
         refreshonly => true,
       }
     }
