@@ -45,6 +45,10 @@ define archive (
   $strip_components=0,
 ) {
 
+  file { '/usr/src':
+    ensure => directory,
+  }
+
   archive::download {"${name}.${extension}":
     ensure           => $ensure,
     url              => $url,
@@ -57,6 +61,7 @@ define archive (
     allow_insecure   => $allow_insecure,
     follow_redirects => $follow_redirects,
     verbose          => $verbose,
+    require          => File['/usr/src'],
   }
 
   archive::extract {$name:
