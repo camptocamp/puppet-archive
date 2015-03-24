@@ -13,6 +13,7 @@
 # - *$allow_insecure: Default value false.
 # - *$follow_redirects: Default value false.
 # - *$verbose: Default value true.
+# - *$proxy_server: Default value undef.
 #
 # Example usage:
 #
@@ -40,6 +41,7 @@ define archive::download (
   $follow_redirects=false,
   $verbose=true,
   $path=$::path,
+  $proxy_server=undef,
 ) {
 
   $insecure_arg = $allow_insecure ? {
@@ -56,6 +58,12 @@ define archive::download (
     package{'curl':
       ensure => present,
     }
+  }
+
+  if $proxy_server {
+    $proxy_option = "--proxy ${proxy_server}"
+  } else {
+    $proxy_option = undef
   }
 
   case $checksum {
@@ -101,8 +109,9 @@ define archive::download (
               $digest_src = $digest_url
             }
 
+
             exec {"download digest of archive ${name}":
-              command => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
+              command => "curl ${proxy_option} -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
               path    => $path,
@@ -144,7 +153,7 @@ define archive::download (
         default => undef,
       }
       exec {"download archive ${name} and check sum":
-        command     => "curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
+        command     => "curl ${proxy_option} -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
         creates     => "${src_target}/${name}",
         logoutput   => true,
         timeout     => $timeout,
