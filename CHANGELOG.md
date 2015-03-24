@@ -1,3 +1,7 @@
+## 2015-03-24 - Release 0.5.0
+
+- Add a proxy_server parameter
+
 ## 2015-03-24 - Release 0.4.1
 
 - Add unit tests
