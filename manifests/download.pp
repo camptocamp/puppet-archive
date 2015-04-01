@@ -103,7 +103,7 @@ define archive::download (
         case $ensure {
           'present': {
 
-            if $digest_url == '' {
+            if !$digest_url {
               $digest_src = "${url}.${digest_type}"
             } else {
               $digest_src = $digest_url
