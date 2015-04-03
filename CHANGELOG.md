@@ -1,3 +1,8 @@
+## 2015-04-03 - Release 0.5.1
+
+- Confine rspec pinning to ruby 1.8
+- Fix when not using digest_url
+
 ## 2015-03-24 - Release 0.5.0
 
 - Add a proxy_server parameter
