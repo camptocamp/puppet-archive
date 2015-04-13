@@ -87,6 +87,7 @@ define archive::download (
             file {"${src_target}/${name}.${digest_type}":
               ensure  => $ensure,
               content => "${digest_string} *${name}",
+              owner   => $user,
               notify  => Exec["download archive ${name} and check sum"],
             }
           }
@@ -94,6 +95,7 @@ define archive::download (
             file {"${src_target}/${name}.${digest_type}":
               ensure => absent,
               purge  => true,
+              owner   => $user,
               force  => true,
             }
           }
@@ -127,6 +129,7 @@ define archive::download (
             file{"${src_target}/${name}.${digest_type}":
               ensure => absent,
               purge  => true,
+              owner   => $user,
               force  => true,
             }
           }
@@ -149,6 +152,7 @@ define archive::download (
           absent: {
             file {"${src_target}/${name}.${digest_type}":
               ensure => absent,
+              owner   => $user,
               purge  => true,
               force  => true,
             }

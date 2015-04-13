@@ -64,6 +64,7 @@ define archive (
     follow_redirects => $follow_redirects,
     verbose          => $verbose,
     proxy_server     => $proxy_server,
+    user             => $user,
   }
 
   archive::extract {$name:
@@ -77,16 +78,5 @@ define archive (
     strip_components => $strip_components,
     require          => Archive::Download["${name}.${extension}"],
     user             => $user,
-  }
-
-  archive::extract {$name:
-    ensure     => $ensure,
-    target     => $target,
-    src_target => $src_target,
-    root_dir   => $root_dir,
-    extension  => $extension,
-    timeout    => $timeout,
-    user       => $user,
-    require    => Archive::Download["${name}.${extension}"]
   }
 }
