@@ -6,6 +6,7 @@
 #
 # - *$url:
 # - *$target: Destination directory
+# - *$purge_target: Purge Destination prior to extraction. Default false
 # - *$checksum: Default value "true"
 # - *$digest_url: Default value undef
 # - *$digest_string: Default value undef
@@ -45,6 +46,7 @@ define archive (
   $verbose=true,
   $strip_components=0,
   $proxy_server=undef,
+  $purge_target=false,
 ) {
 
   archive::download {"${name}.${extension}":
@@ -65,6 +67,7 @@ define archive (
   archive::extract {$name:
     ensure           => $ensure,
     target           => $target,
+    purge            => $purge_target,
     src_target       => $src_target,
     root_dir         => $root_dir,
     extension        => $extension,
