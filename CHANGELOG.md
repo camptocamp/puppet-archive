@@ -1,3 +1,7 @@
+## 2015-04-17 - Release 0.5.2
+
+- Add beaker nodesets
+
 ## 2015-04-03 - Release 0.5.1
 
 - Confine rspec pinning to ruby 1.8
