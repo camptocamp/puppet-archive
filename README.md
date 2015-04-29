@@ -61,6 +61,12 @@ For `.tar.gz` and `tar.bz2` archives, the extract step's `--strip-components=n` 
 strip_components => 1
 ```
 
+```
+purge_target => false
+```
+
+By default the target directory is left intact, this option can be used to `rm -rf` the target directory prior to extraction.
+
 This full example will download the [packer](packer.io) tool to ```/usr/local/bin```:
 
 ```

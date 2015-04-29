@@ -38,6 +38,7 @@ define archive::extract (
   $timeout=120,
   $path=$::path,
   $strip_components=0,
+  $purge=false,
 ) {
 
   if $root_dir {
@@ -53,12 +54,17 @@ define archive::extract (
       $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
 
+      $purge_command = $purge ? {
+        true    => "rm -rf ${target} && ",
+        default => '',
+      }
+
       $command = $extension ? {
-        'zip'     => "mkdir -p ${target} && ${extract_zip}",
-        'tar.gz'  => "mkdir -p ${target} && ${extract_targz}",
-        'tgz'     => "mkdir -p ${target} && ${extract_targz}",
-        'tar.bz2' => "mkdir -p ${target} && ${extract_tarbz2}",
-        'tgz2'    => "mkdir -p ${target} && ${extract_tarbz2}",
+        'zip'     => "${purge_command} mkdir -p ${target} && ${extract_zip}",
+        'tar.gz'  => "${purge_command} mkdir -p ${target} && ${extract_targz}",
+        'tgz'     => "${purge_command} mkdir -p ${target} && ${extract_targz}",
+        'tar.bz2' => "${purge_command} mkdir -p ${target} && ${extract_tarbz2}",
+        'tgz2'    => "${purge_command} mkdir -p ${target} && ${extract_tarbz2}",
         default   => fail ( "Unknown extension value '${extension}'" ),
       }
       exec {"${name} unpack":
