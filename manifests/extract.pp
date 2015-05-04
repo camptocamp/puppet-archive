@@ -53,6 +53,7 @@ define archive::extract (
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
       $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarxz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
 
       $purge_command = $purge ? {
         true    => "rm -rf ${target} && ",
@@ -65,6 +66,8 @@ define archive::extract (
         'tgz'     => "${purge_command} mkdir -p ${target} && ${extract_targz}",
         'tar.bz2' => "${purge_command} mkdir -p ${target} && ${extract_tarbz2}",
         'tgz2'    => "${purge_command} mkdir -p ${target} && ${extract_tarbz2}",
+        'tar.xz'  => "${purge_command} mkdir -p ${target} && ${extract_tarxz}",
+        'txz'     => "${purge_command} mkdir -p ${target} && ${extract_tarxz}",
         default   => fail ( "Unknown extension value '${extension}'" ),
       }
       exec {"${name} unpack":
