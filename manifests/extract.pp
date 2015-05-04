@@ -61,13 +61,13 @@ define archive::extract (
       }
 
       $command = $extension ? {
-        'zip'     => "${purge_command} mkdir -p ${target} && ${extract_zip}",
-        'tar.gz'  => "${purge_command} mkdir -p ${target} && ${extract_targz}",
-        'tgz'     => "${purge_command} mkdir -p ${target} && ${extract_targz}",
-        'tar.bz2' => "${purge_command} mkdir -p ${target} && ${extract_tarbz2}",
-        'tgz2'    => "${purge_command} mkdir -p ${target} && ${extract_tarbz2}",
-        'tar.xz'  => "${purge_command} mkdir -p ${target} && ${extract_tarxz}",
-        'txz'     => "${purge_command} mkdir -p ${target} && ${extract_tarxz}",
+        'zip'     => "${purge_command}mkdir -p ${target} && ${extract_zip}",
+        'tar.gz'  => "${purge_command}mkdir -p ${target} && ${extract_targz}",
+        'tgz'     => "${purge_command}mkdir -p ${target} && ${extract_targz}",
+        'tar.bz2' => "${purge_command}mkdir -p ${target} && ${extract_tarbz2}",
+        'tgz2'    => "${purge_command}mkdir -p ${target} && ${extract_tarbz2}",
+        'tar.xz'  => "${purge_command}mkdir -p ${target} && ${extract_tarxz}",
+        'txz'     => "${purge_command}mkdir -p ${target} && ${extract_tarxz}",
         default   => fail ( "Unknown extension value '${extension}'" ),
       }
       exec {"${name} unpack":
