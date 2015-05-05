@@ -95,7 +95,7 @@ define archive::download (
             file {"${src_target}/${name}.${digest_type}":
               ensure => absent,
               purge  => true,
-              owner   => $user,
+              owner  => $user,
               force  => true,
             }
           }
@@ -129,7 +129,7 @@ define archive::download (
             file{"${src_target}/${name}.${digest_type}":
               ensure => absent,
               purge  => true,
-              owner   => $user,
+              owner  => $user,
               force  => true,
             }
           }
@@ -152,7 +152,7 @@ define archive::download (
           absent: {
             file {"${src_target}/${name}.${digest_type}":
               ensure => absent,
-              owner   => $user,
+              owner  => $user,
               purge  => true,
               force  => true,
             }
