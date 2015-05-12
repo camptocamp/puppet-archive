@@ -1,3 +1,7 @@
+## 2015-05-12 - Release 0.6.1
+
+Don't pin beaker
+
 ## 2015-05-12 - Release 0.6.0
 
 Support the purging of target directories
