@@ -1,3 +1,7 @@
+## 2015-05-18 - Release 0.7.0
+
+Support tar.xz format
+
 ## 2015-05-13 - Release 0.6.2
 
 Add puppet-lint-file_source_rights-check gem
