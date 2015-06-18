@@ -141,7 +141,7 @@ define archive::download (
 
       if $digest_string != '' {
         case $ensure {
-          present: {
+          'present': {
             file {"${src_target}/${name}.${digest_type}":
               ensure  => $ensure,
               owner   => $user,
@@ -149,7 +149,7 @@ define archive::download (
               notify  => Exec["download archive ${name} and check sum"],
             }
           }
-          absent: {
+          'absent': {
             file {"${src_target}/${name}.${digest_type}":
               ensure => absent,
               owner  => $user,
