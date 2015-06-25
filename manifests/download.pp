@@ -14,6 +14,7 @@
 # - *$follow_redirects: Default value false.
 # - *$verbose: Default value true.
 # - *$proxy_server: Default value undef.
+# - *$user: The user used to download the archive
 #
 # Example usage:
 #
@@ -42,6 +43,7 @@ define archive::download (
   $verbose=true,
   $path=$::path,
   $proxy_server=undef,
+  $user=undef,
 ) {
 
   $insecure_arg = $allow_insecure ? {
@@ -85,6 +87,7 @@ define archive::download (
             file {"${src_target}/${name}.${digest_type}":
               ensure  => $ensure,
               content => "${digest_string} *${name}",
+              owner   => $user,
               notify  => Exec["download archive ${name} and check sum"],
             }
           }
@@ -92,6 +95,7 @@ define archive::download (
             file {"${src_target}/${name}.${digest_type}":
               ensure => absent,
               purge  => true,
+              owner  => $user,
               force  => true,
             }
           }
@@ -116,6 +120,7 @@ define archive::download (
               timeout => $timeout,
               path    => $path,
               notify  => Exec["download archive ${name} and check sum"],
+              user    => $user,
               require => Package['curl'],
             }
 
@@ -123,6 +128,31 @@ define archive::download (
           'absent': {
             file{"${src_target}/${name}.${digest_type}":
               ensure => absent,
+              purge  => true,
+              owner  => $user,
+              force  => true,
+            }
+          }
+          default: {
+            fail('$ensure can only be present or absent.')
+          }
+        }
+      }
+
+      if $digest_string != '' {
+        case $ensure {
+          'present': {
+            file {"${src_target}/${name}.${digest_type}":
+              ensure  => $ensure,
+              owner   => $user,
+              content => "${digest_string} *${name}",
+              notify  => Exec["download archive ${name} and check sum"],
+            }
+          }
+          'absent': {
+            file {"${src_target}/${name}.${digest_type}":
+              ensure => absent,
+              owner  => $user,
               purge  => true,
               force  => true,
             }
@@ -160,6 +190,7 @@ define archive::download (
         path        => $path,
         require     => Package['curl'],
         notify      => $_notify,
+        user        => $user,
         refreshonly => $refreshonly,
       }
 
