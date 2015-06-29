@@ -138,30 +138,6 @@ define archive::download (
           }
         }
       }
-
-      if $digest_string != '' {
-        case $ensure {
-          'present': {
-            file {"${src_target}/${name}.${digest_type}":
-              ensure  => $ensure,
-              owner   => $user,
-              content => "${digest_string} *${name}",
-              notify  => Exec["download archive ${name} and check sum"],
-            }
-          }
-          'absent': {
-            file {"${src_target}/${name}.${digest_type}":
-              ensure => absent,
-              owner  => $user,
-              purge  => true,
-              force  => true,
-            }
-          }
-          default: {
-            fail('$ensure can only be present or absent.')
-          }
-        }
-      }
     }
     false :  {
       $checksum_cmd = undef # Fix for strict_variables
