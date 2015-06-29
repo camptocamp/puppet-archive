@@ -1,3 +1,7 @@
+## 2015-06-29 - Release 0.8.0
+
+allow to specify a user for the archive extraction and the archive download
+
 ## 2015-06-26 - Release 0.7.5
 
 Fix strict_variables activation with rspec-puppet 2.2
