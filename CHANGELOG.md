@@ -1,3 +1,7 @@
+## 2015-08-21 - Release 0.8.1
+
+Use docker for acceptance tests
+
 ## 2015-06-29 - Release 0.8.0
 
 allow to specify a user for the archive extraction and the archive download
