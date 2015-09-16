@@ -9,7 +9,8 @@
   "issues_url": "https://github.com/camptocamp/puppet-archive/issues",
   "description": "Archive Module for Puppet",
   "dependencies": [
-
+    { "name": "puppetlabs/stdlib", "version_requirement": ">=3.2.0 <5.0.0" },
+	 { "name": "johnericson/cygwin_exec", "version_requirement": ">=0.1.0" }
   ],
   "operatingsystem_support": [
     {

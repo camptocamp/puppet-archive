@@ -43,6 +43,13 @@ define archive::extract (
   $user=undef,
 ) {
 
+   # JOE
+	if $::osfamily == 'Windows' {
+	  $exec_provider = 'cygwin'
+	} else { 
+	  $exec_provider = 'posix'
+	} 
+  
   if $root_dir {
     $extract_dir = "${target}/${root_dir}"
   } else {
@@ -52,7 +59,7 @@ define archive::extract (
   case $ensure {
     'present': {
 
-      $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
+      $extract_zip    = "unzip -o '${src_target}/${name}.${extension}' -d '${target}'"
       $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarxz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
@@ -78,6 +85,7 @@ define archive::extract (
         timeout => $timeout,
         user    => $user,
         path    => $path,
+		  provider => $exec_provider,
       }
     }
     'absent': {
