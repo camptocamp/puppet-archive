@@ -29,6 +29,16 @@
 #    url           => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
 #  }
 #
+
+# JOE
+if $::osfamily == 'Windows' { 
+  $default_src_target = 'c:\\Temp'
+  $exec_provider = 'cygwin'
+} else { 
+  $default_src_target = '/usr/src'
+  $exec_provider = 'posix'
+}
+
 define archive::download (
   $url,
   $ensure=present,
@@ -37,7 +47,7 @@ define archive::download (
   $digest_string=undef,
   $digest_type='md5',
   $timeout=120,
-  $src_target='/usr/src',
+  $src_target=$default_src_target,
   $allow_insecure=false,
   $follow_redirects=false,
   $verbose=true,
@@ -45,6 +55,17 @@ define archive::download (
   $proxy_server=undef,
   $user=undef,
 ) {
+
+	# JOE
+	if $::osfamily == 'Windows' { 
+	  $default_src_target = 'c:\\Temp'
+	  $exec_provider      = 'cygwin'
+	  $package_curl       = Exec['cygwin_package_curl']
+	} else { 
+	  $default_src_target = '/usr/src'
+	  $exec_provider      = 'posix'
+	  $package_curl       = Package['curl']
+	}
 
   $insecure_arg = $allow_insecure ? {
     true    => '-k',
@@ -56,7 +77,7 @@ define archive::download (
     default => '',
   }
 
-  if !defined(Package['curl']) {
+  if !defined($package_curl) {
     package{'curl':
       ensure => present,
     }
@@ -121,7 +142,8 @@ define archive::download (
               path    => $path,
               notify  => Exec["download archive ${name} and check sum"],
               user    => $user,
-              require => Package['curl'],
+              require => $package_curl,
+				  provider    => $exec_provider,
             }
 
           }
@@ -158,24 +180,40 @@ define archive::download (
         true    => true,
         default => undef,
       }
-      exec {"download archive ${name} and check sum":
-        command     => "curl ${proxy_option} -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
-        creates     => "${src_target}/${name}",
-        logoutput   => true,
-        timeout     => $timeout,
-        path        => $path,
-        require     => Package['curl'],
-        notify      => $_notify,
-        user        => $user,
-        refreshonly => $refreshonly,
+      if $::osfamily == 'Windows' {
+	      # TODO: Implement Package['curl'] for Windows.
+	      exec {"download archive ${name} and check sum":
+	        command     => "/usr/bin/curl -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
+	        creates     => "${src_target}/${name}",
+	        logoutput   => true,
+	        timeout     => $timeout,
+			  require     => $package_curl,
+	        notify      => $_notify,
+	        refreshonly => $refreshonly,
+	        provider    => $exec_provider,
+	      }
+      } else {
+	      exec {"download archive ${name} and check sum":
+           command     => "curl ${proxy_option} -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
+           creates     => "${src_target}/${name}",
+           logoutput   => true,
+           timeout     => $timeout,
+           path        => $path,
+			  require     => $package_curl,
+           notify      => $_notify,
+           user        => $user,
+           refreshonly => $refreshonly,
+	        provider    => $exec_provider,
+	      }
       }
 
-      exec {"rm-on-error-${name}":
+			exec {"rm-on-error-${name}":
         command     => "rm -f ${src_target}/${name} ${src_target}/${name}.${digest_type} && exit 1",
         unless      => $checksum_cmd,
         cwd         => $src_target,
         path        => $path,
         refreshonly => true,
+	     provider    => $exec_provider,
       }
     }
     'absent': {
