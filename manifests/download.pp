@@ -93,7 +93,7 @@ define archive::download (
           'present': {
             file {"${src_target}/${name}.${digest_type}":
               ensure  => $ensure,
-              content => "${digest_string} *${name}",
+              content => "${digest_string} ${::archive::params::binary_indicator}${name}",
               owner   => $user,
               notify  => Exec["download archive ${name} and check sum"],
             }

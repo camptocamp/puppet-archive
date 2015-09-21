@@ -47,6 +47,8 @@ define archive::extract (
   },
 ) {
 
+  require ::archive::params
+
   if $root_dir {
     $extract_dir = "${target}/${root_dir}"
   } else {

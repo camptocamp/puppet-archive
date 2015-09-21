@@ -12,6 +12,7 @@ class archive::params {
         'sha256' => 'sha256',
         'sha512' => 'sha512',
       }
+      $binary_indicator = undef
     }
     default: {
       $tarcmd = 'tar'
@@ -23,6 +24,7 @@ class archive::params {
         'sha384' => 'sha384sum',
         'sha512' => 'sha512sum',
       }
+      $binary_indicator = '*'
     }
   }
 }
