@@ -41,6 +41,7 @@ define archive::extract (
   $strip_components=0,
   $purge=false,
   $user=undef,
+  $same_permissions=false,
 ) {
 
   if $root_dir {
@@ -49,13 +50,19 @@ define archive::extract (
     $extract_dir = "${target}/${name}"
   }
 
+  if $same_permissions {
+    $_same_permissions="--same-permissions"
+  } else {
+    $_same_permissions="--no-same-permissions"
+  }
+
   case $ensure {
     'present': {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
-      $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarxz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_targz  = "tar --no-same-owner ${_same_permissions} --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarbz2 = "tar --no-same-owner ${_same_permissions} --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarxz  = "tar --no-same-owner ${_same_permissions} --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
 
       $purge_command = $purge ? {
         true    => "rm -rf ${target} && ",
