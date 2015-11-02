@@ -49,6 +49,7 @@ define archive (
   $proxy_server=undef,
   $purge_target=false,
   $user=undef,
+  $path = $::path,
 ) {
 
   archive::download {"${name}.${extension}":
@@ -65,6 +66,7 @@ define archive (
     verbose          => $verbose,
     proxy_server     => $proxy_server,
     user             => $user,
+    path             => $path,
   }
 
   archive::extract {$name:
@@ -78,5 +80,6 @@ define archive (
     strip_components => $strip_components,
     require          => Archive::Download["${name}.${extension}"],
     user             => $user,
+    path             => $path,
   }
 }
