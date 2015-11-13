@@ -15,6 +15,7 @@
 # - *$verbose: Default value true.
 # - *$proxy_server: Default value undef.
 # - *$user: The user used to download the archive
+# - *$fail_on_http_error: Whether or not the curl command should throw an error when an http error >= 400 is encountered. Default value undef
 #
 # Example usage:
 #
@@ -24,9 +25,10 @@
 #  }
 #
 #  archive::download {"apache-tomcat-6.0.26.tar.gz":
-#    ensure        => present,
-#    digest_string => "f9eafa9bfd620324d1270ae8f09a8c89",
-#    url           => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
+#    ensure             => present,
+#    digest_string      => "f9eafa9bfd620324d1270ae8f09a8c89",
+#    url                => "http://archive.apache.org/dist/tomcat/tomcat-6/v6.0.26/bin/apache-tomcat-6.0.26.tar.gz",
+#    fail_on_http_error => true
 #  }
 #
 define archive::download (
@@ -44,7 +46,13 @@ define archive::download (
   $path=$::path,
   $proxy_server=undef,
   $user=undef,
+  $fail_on_http_error=undef,
 ) {
+
+  $fail_on_http_error_arg = $fail_on_http_error ? {
+    true    => '-f',
+    default => '',
+  }
 
   $insecure_arg = $allow_insecure ? {
     true    => '-k',
@@ -115,7 +123,7 @@ define archive::download (
 
 
             exec {"download digest of archive ${name}":
-              command => "curl ${proxy_option} -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
+              command => "curl ${proxy_option} -s -S ${fail_on_http_error_arg} ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
               path    => $path,
@@ -159,7 +167,7 @@ define archive::download (
         default => undef,
       }
       exec {"download archive ${name} and check sum":
-        command     => "curl ${proxy_option} -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
+        command     => "curl ${proxy_option} -s -S ${fail_on_http_error_arg} ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
         creates     => "${src_target}/${name}",
         logoutput   => true,
         timeout     => $timeout,
