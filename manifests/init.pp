@@ -49,6 +49,7 @@ define archive (
   $proxy_server=undef,
   $purge_target=false,
   $user=undef,
+  $tar_command=undef,
 ) {
 
   archive::download {"${name}.${extension}":
@@ -76,6 +77,7 @@ define archive (
     extension        => $extension,
     timeout          => $timeout,
     strip_components => $strip_components,
+    tar_command      => $tar_command,
     require          => Archive::Download["${name}.${extension}"],
     user             => $user,
   }

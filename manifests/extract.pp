@@ -41,6 +41,10 @@ define archive::extract (
   $strip_components=0,
   $purge=false,
   $user=undef,
+  $tar_command=$::osfamily ? {
+    'Solaris' => 'gtar',
+    default   => 'tar',
+  },
 ) {
 
   if $root_dir {
@@ -53,9 +57,9 @@ define archive::extract (
     'present': {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
-      $extract_targz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarbz2 = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarxz  = "tar --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_targz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarbz2 = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarxz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
 
       $purge_command = $purge ? {
         true    => "rm -rf ${target} && ",
