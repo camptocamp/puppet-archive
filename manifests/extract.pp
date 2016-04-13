@@ -60,7 +60,7 @@ define archive::extract (
       $extract_tar    = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xf  ${src_target}/${name}.${extension} -C ${target}"
       $extract_targz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarbz2 = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarxz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarxz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xJf ${src_target}/${name}.${extension} -C ${target}"
 
       $purge_command = $purge ? {
         true    => "rm -rf ${target} && ",
