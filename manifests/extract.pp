@@ -57,6 +57,7 @@ define archive::extract (
     'present': {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
+      $extract_tar    = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xf  ${src_target}/${name}.${extension} -C ${target}"
       $extract_targz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarbz2 = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
       $extract_tarxz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
@@ -68,6 +69,7 @@ define archive::extract (
 
       $command = $extension ? {
         'zip'     => "${purge_command}mkdir -p ${target} && ${extract_zip}",
+        'tar'     => "${purge_command}mkdir -p ${target} && ${extract_tar}",
         'tar.gz'  => "${purge_command}mkdir -p ${target} && ${extract_targz}",
         'tgz'     => "${purge_command}mkdir -p ${target} && ${extract_targz}",
         'tar.bz2' => "${purge_command}mkdir -p ${target} && ${extract_tarbz2}",
