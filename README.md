@@ -71,13 +71,13 @@ This full example will download the [packer](packer.io) tool to ```/usr/local/bi
 
 ```
 archive { '0.5.1_linux_amd64':
-   ensure => present,
-   url => 'https://dl.bintray.com/mitchellh/packer/0.5.1_linux_amd64.zip',
-   target => '/usr/local/bin',
+   ensure           => present,
+   url              => 'https://dl.bintray.com/mitchellh/packer/0.5.1_linux_amd64.zip',
+   target           => '/usr/local/bin',
    follow_redirects => true,
-   extension => 'zip',
-   checksum => false,
-   src_target => '/tmp'
+   extension        => 'zip',
+   checksum         => false,
+   src_target       => '/tmp'
 }
 ```
 
@@ -85,14 +85,14 @@ You can also specifiy a global user to be used for the whole download and extrac
 ```
 
 archive { '0.5.1_linux_amd64':
-   ensure => present,
-   url => 'https://dl.bintray.com/mitchellh/packer/0.5.1_linux_amd64.zip',
-   target => '/usr/local/bin',
+   ensure           => present,
+   url              => 'https://dl.bintray.com/mitchellh/packer/0.5.1_linux_amd64.zip',
+   target           => '/usr/local/bin',
    follow_redirects => true,
-   extension => 'zip',
-   checksum => false,
-   user       => 'camptocamp',
-   src_target => '/home/camptocamp'
+   extension        => 'zip',
+   checksum         => false,
+   user             => 'camptocamp',
+   src_target       => '/home/camptocamp'
 }
 ```
 
