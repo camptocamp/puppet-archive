@@ -21,7 +21,7 @@
 # - *$strip_components: Default value 0
 # - *$proxy_server: Default value undef
 # - *$user: User used to do the download and the extraction. The final directory will be used by him/her.
-# - *$cookie: the cookie used for the download
+# - *$cookie: the cookie used for the download 
 #
 # Example usage:
 #
