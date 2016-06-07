@@ -59,8 +59,8 @@ define archive::download (
   }
 
   $cookie_arg = $cookie ? {
-  	true => '-H "Cookie: ' + $cookie + '"'
-	default => '',
+        true => "-H \"Cookie: ${cookie}\"",
+        default => '',
   }
 
   if !defined(Package['curl']) {
