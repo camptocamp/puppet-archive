@@ -10,7 +10,7 @@ describe 'archive' do
       end
 
       context 'without parameters' do
-        it { expect { is_expected.to compile.with_all_deps }.to raise_error(/Must pass/) }
+        it { expect { is_expected.to compile.with_all_deps }.to raise_error(/url/) }
       end
 
       context 'with url, without target' do
@@ -20,7 +20,7 @@ describe 'archive' do
           }
         end
 
-        it { expect { is_expected.to compile.with_all_deps }.to raise_error(/Must pass target/) }
+        it { expect { is_expected.to compile.with_all_deps }.to raise_error(/target/) }
       end
 
       context 'with target, without url' do
@@ -30,7 +30,7 @@ describe 'archive' do
           }
         end
         
-        it { expect { is_expected.to compile.with_all_deps }.to raise_error(/Must pass url/) }
+        it { expect { is_expected.to compile.with_all_deps }.to raise_error(/url/) }
       end
 
       context 'with url and target' do
