@@ -15,6 +15,9 @@
 # - *$verbose: Default value true.
 # - *$proxy_server: Default value undef.
 # - *$user: The user used to download the archive
+# - *$cookie: The cookie used to download the archive: Default is none
+# - *$allow_cookie: use custom cookie
+# - *$cookie_value: cookie string
 #
 # Example usage:
 #
@@ -44,6 +47,8 @@ define archive::download (
   $path=$::path,
   $proxy_server=undef,
   $user=undef,
+  $cookie_value=undef,
+  $allow_cookie=false,
 ) {
 
   $insecure_arg = $allow_insecure ? {
@@ -54,6 +59,11 @@ define archive::download (
   $redirect_arg = $follow_redirects ? {
     true    => '-L',
     default => '',
+  }
+
+  $cookie_arg = $allow_cookie ? {
+        true => "-H \"Cookie: $cookie_value\"",
+        default => '',
   }
 
   if !defined(Package['curl']) {
@@ -113,9 +123,8 @@ define archive::download (
               $digest_src = $digest_url
             }
 
-
             exec {"download digest of archive ${name}":
-              command => "curl ${proxy_option} -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
+              command => "curl ${proxy_option} -s -S ${cookie_arg} ${insecure_arg} ${redirect_arg} -o ${src_target}/${name}.${digest_type} '${digest_src}'",
               creates => "${src_target}/${name}.${digest_type}",
               timeout => $timeout,
               path    => $path,
@@ -158,8 +167,9 @@ define archive::download (
         true    => true,
         default => undef,
       }
+
       exec {"download archive ${name} and check sum":
-        command     => "curl ${proxy_option} -s -S ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
+        command     => "curl ${proxy_option} -s -S ${cookie_arg} ${insecure_arg} ${redirect_arg} -o ${src_target}/${name} '${url}'",
         creates     => "${src_target}/${name}",
         logoutput   => true,
         timeout     => $timeout,

@@ -21,6 +21,8 @@
 # - *$strip_components: Default value 0
 # - *$proxy_server: Default value undef
 # - *$user: User used to do the download and the extraction. The final directory will be used by him/her.
+# - *$allow_cookie: use custom cookie
+# - *$cookie_value: cookie string
 #
 # Example usage:
 #
@@ -50,6 +52,8 @@ define archive (
   $purge_target=false,
   $user=undef,
   $tar_command=undef,
+  $cookie_value=undef,
+  $allow_cookie=false,
 ) {
 
   archive::download {"${name}.${extension}":
@@ -66,6 +70,8 @@ define archive (
     verbose          => $verbose,
     proxy_server     => $proxy_server,
     user             => $user,
+    cookie_value     => $cookie_value,
+    allow_cookie     => $allow_cookie,
   }
 
   archive::extract {$name:
