@@ -45,7 +45,7 @@ define archive::extract (
     'Solaris' => 'gtar',
     default   => 'tar',
   },
-  $umask=022,
+  $umask='022',
 ) {
 
   if $root_dir {
