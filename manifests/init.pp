@@ -50,6 +50,7 @@ define archive (
   $purge_target=false,
   $user=undef,
   $tar_command=undef,
+  $umask=022,
 ) {
 
   archive::download {"${name}.${extension}":

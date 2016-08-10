@@ -45,6 +45,7 @@ define archive::extract (
     'Solaris' => 'gtar',
     default   => 'tar',
   },
+  $umask=022,
 ) {
 
   if $root_dir {
@@ -82,6 +83,7 @@ define archive::extract (
         timeout => $timeout,
         user    => $user,
         path    => $path,
+        umask   => $umask,
       }
     }
     'absent': {
