@@ -50,6 +50,7 @@ define archive (
   $purge_target=false,
   $user=undef,
   $tar_command=undef,
+  $path = $::path,
 ) {
 
   archive::download {"${name}.${extension}":
@@ -66,6 +67,7 @@ define archive (
     verbose          => $verbose,
     proxy_server     => $proxy_server,
     user             => $user,
+    path             => $path,
   }
 
   archive::extract {$name:
@@ -80,5 +82,6 @@ define archive (
     tar_command      => $tar_command,
     require          => Archive::Download["${name}.${extension}"],
     user             => $user,
+    path             => $path,
   }
 }
