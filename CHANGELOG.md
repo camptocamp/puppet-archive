@@ -1,3 +1,9 @@
+## 2016-08-18 - Release 0.9.0
+
+- Allow to pass $path to init class (fix #63)
+- Add fail_on_http_error parameter to archive::download (fix #64)
+- Fix tests with Puppet 4 (fix #66)
+
 ## 2015-08-21 - Release 0.8.1
 
 Use docker for acceptance tests
