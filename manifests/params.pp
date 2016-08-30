@@ -14,6 +14,18 @@ class archive::params {
       }
       $binary_indicator = undef
     }
+    'Solaris': {
+      $tarcmd = 'gtar'
+      $digest_types = {
+        'md5' => 'md5sum',
+        'sha1' => 'sha1sum',
+        'sha224' => 'sha224sum',
+        'sha256' => 'sha256sum',
+        'sha384' => 'sha384sum',
+        'sha512' => 'sha512sum',
+      }
+      $binary_indicator = '*'
+    }
     default: {
       $tarcmd = 'tar'
       $digest_types = {

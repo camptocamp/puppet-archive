@@ -41,10 +41,7 @@ define archive::extract (
   $strip_components=0,
   $purge=false,
   $user=undef,
-  $tar_command=$::osfamily ? {
-    'Solaris' => 'gtar',
-    default   => 'tar',
-  },
+  $tar_command=undef,
 ) {
 
   require ::archive::params
@@ -55,13 +52,19 @@ define archive::extract (
     $extract_dir = "${target}/${name}"
   }
 
+  if $tar_command {
+    $real_tar_command = $tar_command
+  } else {
+    $real_tar_command = $::archive::params::tarcmd
+  }
+
   case $ensure {
     'present': {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
-      $extract_targz  = "${::archive::params::tarcmd} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarbz2 = "${::archive::params::tarcmd} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarxz  = "${::archive::params::tarcmd} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_targz  = "${real_tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarbz2 = "${real_tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarxz  = "${real_tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
 
       $purge_command = $purge ? {
         true    => "rm -rf ${target} && ",
