@@ -41,10 +41,10 @@ define archive::extract (
   $strip_components=0,
   $purge=false,
   $user=undef,
-  $tar_command=undef,
+  $tar_command=$::archive::params::tarcmd,
 ) {
 
-  require ::archive::params
+  include ::archive::params
 
   if $root_dir {
     $extract_dir = "${target}/${root_dir}"
@@ -52,19 +52,17 @@ define archive::extract (
     $extract_dir = "${target}/${name}"
   }
 
-  if $tar_command {
-    $real_tar_command = $tar_command
-  } else {
-    $real_tar_command = $::archive::params::tarcmd
+  if ! $tar_command {
+    fail("${module_name}: parameter \$tar_command not specified and \$::archive::params::tarcmd not found")
   }
 
   case $ensure {
     'present': {
 
       $extract_zip    = "unzip -o ${src_target}/${name}.${extension} -d ${target}"
-      $extract_targz  = "${real_tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarbz2 = "${real_tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
-      $extract_tarxz  = "${real_tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_targz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xzf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarbz2 = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xjf ${src_target}/${name}.${extension} -C ${target}"
+      $extract_tarxz  = "${tar_command} --no-same-owner --no-same-permissions --strip-components=${strip_components} -xpf ${src_target}/${name}.${extension} -C ${target}"
 
       $purge_command = $purge ? {
         true    => "rm -rf ${target} && ",

@@ -54,8 +54,6 @@ define archive (
 ) {
 
   include ::archive::params
-  Class['archive::params'] ->
-  Archive[$name]
 
   archive::download {"${name}.${extension}":
     ensure           => $ensure,
