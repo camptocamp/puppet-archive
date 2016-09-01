@@ -44,7 +44,7 @@ define archive::extract (
   $tar_command=$::archive::params::tarcmd,
 ) {
 
-  include ::archive::params
+  require ::archive::params
 
   if $root_dir {
     $extract_dir = "${target}/${root_dir}"
