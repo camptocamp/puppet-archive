@@ -52,6 +52,11 @@ define archive (
   $tar_command=undef,
   $path = $::path,
 ) {
+  # install required package unzip
+  package { 'unzip': ensure => 'installed'}
+
+  # set the right PATH environments for exec commands
+  Exec { path => [ "/usr/bin:/bin:/usr/sbin:/sbin" ] }
 
   archive::download {"${name}.${extension}":
     ensure           => $ensure,
