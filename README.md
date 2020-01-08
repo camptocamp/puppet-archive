@@ -1,6 +1,13 @@
 Archive Puppet Module
 ====================
 
+
+**THIS MODULE IS DEPRECATED**
+
+Use [`puppet-archive`](https://github.com/voxpupuli/puppet-archive) instead.
+
+
+
 [![Puppet Forge Version](http://img.shields.io/puppetforge/v/camptocamp/archive.svg)](https://forge.puppetlabs.com/camptocamp/archive)
 [![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/camptocamp/archive.svg)](https://forge.puppetlabs.com/camptocamp/archive)
 [![Build Status](https://img.shields.io/travis/camptocamp/puppet-archive/master.svg)](https://travis-ci.org/camptocamp/puppet-archive)
