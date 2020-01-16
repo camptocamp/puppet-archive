@@ -53,6 +53,8 @@ define archive (
   $path = $::path,
 ) {
 
+  include ::archive::params
+
   archive::download {"${name}.${extension}":
     ensure           => $ensure,
     url              => $url,

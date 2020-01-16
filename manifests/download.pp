@@ -78,11 +78,10 @@ define archive::download (
 
   case $checksum {
     true : {
-      case $digest_type {
-        'md5','sha1','sha224','sha256','sha384','sha512' : {
-          $checksum_cmd = "${digest_type}sum -c ${name}.${digest_type}"
-        }
-        default: { fail 'Unimplemented digest type' }
+      if $digest_type in keys($::archive::params::digest_types) {
+          $checksum_cmd = "${::archive::params::digest_types[$digest_type]} -c ${name}.${digest_type}"
+      } else {
+        fail 'Unimplemented digest type'
       }
 
       if $digest_url and $digest_string {
@@ -94,7 +93,7 @@ define archive::download (
           'present': {
             file {"${src_target}/${name}.${digest_type}":
               ensure  => $ensure,
-              content => "${digest_string} *${name}",
+              content => "${digest_string} ${::archive::params::binary_indicator}${name}",
               owner   => $user,
               notify  => Exec["download archive ${name} and check sum"],
             }

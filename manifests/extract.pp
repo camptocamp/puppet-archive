@@ -41,16 +41,19 @@ define archive::extract (
   $strip_components=0,
   $purge=false,
   $user=undef,
-  $tar_command=$::osfamily ? {
-    'Solaris' => 'gtar',
-    default   => 'tar',
-  },
+  $tar_command=$::archive::params::tarcmd,
 ) {
+
+  require ::archive::params
 
   if $root_dir {
     $extract_dir = "${target}/${root_dir}"
   } else {
     $extract_dir = "${target}/${name}"
+  }
+
+  if ! $tar_command {
+    fail("${module_name}: parameter \$tar_command not specified and \$::archive::params::tarcmd not found")
   }
 
   case $ensure {
